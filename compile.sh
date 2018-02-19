@@ -1,1 +1,1 @@
-javac -d bin src/*.java
+javac -d bin src/app/*.java src/view/*.java src/dao/*.java src/controllers/*.java src/model/*.java

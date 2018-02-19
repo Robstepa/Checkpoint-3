@@ -17,6 +17,17 @@
 *.zip
 *.tar.gz
 *.rar
+*.idea
+*.iml
+*.csv
+*.txt
+*.db
+*.xml
+*.dll
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+bin/
+.idea/
+lib/

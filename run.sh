@@ -1,1 +1,1 @@
-java -cp ".:bin/:sqlite-jdbc-3.21.0.jar" Application
+java -cp ".:bin/:sqlite-jdbc-3.21.0.jar" app.Application
