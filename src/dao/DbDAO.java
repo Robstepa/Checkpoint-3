@@ -130,4 +130,26 @@ public class DbDAO{
         }
         return books;
     }
+
+    public ArrayList<BookModel> searchBooksByAuthor(String author){
+        ArrayList<BookModel> books= new ArrayList<>();
+        try {
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:database/BookStore.db");
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT *  FROM Books WHERE author ='" + author + "';");
+            while(resultSet.next()){
+                books.add(new BookModel(resultSet.getString("ISBN"),
+                                        resultSet.getString("author"),
+                                        resultSet.getString("title"),
+                                        resultSet.getString("publisher"),
+                                        resultSet.getInt("publication_year"),
+                                        resultSet.getInt("price"),
+                                        resultSet.getString("type")));
+            }
+        } catch (Exception e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return books;
+    }
 }

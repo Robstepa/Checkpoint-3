@@ -39,6 +39,7 @@ public class UserController{
                     showAllBooks();
                     break;
                 case "6":
+                    showBooksByAuthor();
                     break;    
                 case "0":
                     isDone = true;
@@ -119,6 +120,14 @@ public class UserController{
 
     private void showAllBooks(){
         ArrayList<BookModel> books = dao.getAllBooks();
+        for (BookModel book : books){
+            view.printMessege(book.toString());
+        }
+    }
+
+    private void showBooksByAuthor(){
+        String author = view.getUserInput("Enter author name: ");
+        ArrayList<BookModel> books = dao.searchBooksByAuthor(author);
         for (BookModel book : books){
             view.printMessege(book.toString());
         }
