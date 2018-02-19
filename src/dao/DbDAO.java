@@ -6,6 +6,7 @@ import model.BookModel;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DbDAO{
@@ -13,11 +14,13 @@ public class DbDAO{
     View view;
     Connection connection;
     Statement statement;
+    ResultSet resultSet;
 
     public DbDAO(){
         view = new View();
         connection = null;
         statement = null;
+        resultSet = null;
     }
 
     public void createDataBase(){
@@ -67,4 +70,64 @@ public class DbDAO{
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
     }    
+
+    public ArrayList<BookModel> getAllBooks(){
+        ArrayList<BookModel> books= new ArrayList<>();
+        try {
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:database/BookStore.db");
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM Books ORDER BY title ASC;");
+            while(resultSet.next()){
+                books.add(new BookModel(resultSet.getString("ISBN"),
+                                        resultSet.getString("author"),
+                                        resultSet.getString("title"),
+                                        resultSet.getString("publisher"),
+                                        resultSet.getInt("publication_year"),
+                                        resultSet.getInt("price"),
+                                        resultSet.getString("type")));
+            }
+        
+        } catch (Exception e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return books;
+    }
+
+    public void editBookData(){
+    }
+
+    public void deleteBook(BookModel book){
+        try {
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:database/BookStore.db");
+            statement = connection.createStatement();
+            String sql = "DELETE from Books where title='" + book.getTitle() + "';";
+            statement.executeUpdate(sql);
+        } catch (Exception e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+    }
+
+    public ArrayList<BookModel> searchBooksBy(String parameter, String searchPhrase){
+        ArrayList<BookModel> books= new ArrayList<>();
+        try {
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:database/BookStore.db");
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT *  from Books where " + parameter.toLowerCase() +  " ='" + searchPhrase + "';");
+            while(resultSet.next()){
+                books.add(new BookModel(resultSet.getString("ISBN"),
+                                        resultSet.getString("author"),
+                                        resultSet.getString("title"),
+                                        resultSet.getString("publisher"),
+                                        resultSet.getInt("publication_year"),
+                                        resultSet.getInt("price"),
+                                        resultSet.getString("type")));
+            }
+        } catch (Exception e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return books;
+    }
 }

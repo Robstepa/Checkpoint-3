@@ -75,4 +75,8 @@ public class BookModel{
     public void setType(String type) {
         this.type = type;
     }
+
+    public String toString() {
+        return String.format("ISBN: %S, Author: %s, Title: %s, Publisher: %s, Publicaton year: %d, Price: %d, Type: %s", isbn, author, title, publisher, publicationYear, price, type);
+    }
 }
